@@ -1,0 +1,9 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 30778
+    hostPort: 30778
+# uncomment to following line to have a 2 nodes cluster (1 master + 1 worker)
+# - role: worker
