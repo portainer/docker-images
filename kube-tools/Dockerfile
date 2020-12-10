@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
   ca-certificates \
   curl \
   gnupg-agent \
+  netcat \
   software-properties-common
 
 # Install Docker
@@ -39,3 +40,11 @@ COPY kind.yaml /
 RUN curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" && \
   chmod +x ./kubectl && \
   mv ./kubectl /usr/local/bin/kubectl
+
+# Install httpie and jq
+
+RUN apt-get install -y httpie jq
+
+# Install wait-for
+
+RUN curl -L https://raw.githubusercontent.com/eficode/wait-for/master/wait-for -o /bin/wait-for && chmod +x /bin/wait-for
