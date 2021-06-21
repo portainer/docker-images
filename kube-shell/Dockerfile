@@ -30,6 +30,7 @@ RUN echo 'shell:x:1000:1000:shell,,,:/home/shell:/bin/bash' > /etc/passwd && \
     echo 'shell:x:1000:' > /etc/group && \
     mkdir /home/shell && \
     echo '. /etc/profile.d/bash_completion.sh' >> /home/shell/.bashrc && \
+    echo 'alias kubectl="kubectl -n default"' >> /home/shell/.bashrc && \
     echo 'alias k="kubectl"' >> /home/shell/.bashrc && \
     echo 'alias ks="kubectl -n kube-system"' >> /home/shell/.bashrc && \
     echo 'source <(kubectl completion bash)' >> /home/shell/.bashrc && \
