@@ -33,6 +33,7 @@ RUN echo 'shell:x:1000:1000:shell,,,:/home/shell:/bin/bash' > /etc/passwd && \
     echo 'alias kubectl="kubectl -n default"' >> /home/shell/.bashrc && \
     echo 'alias k="kubectl"' >> /home/shell/.bashrc && \
     echo 'alias ks="kubectl -n kube-system"' >> /home/shell/.bashrc && \
+    echo 'alias helm="helm -n default"' >> /home/shell/.bashrc && \
     echo 'source <(kubectl completion bash)' >> /home/shell/.bashrc && \
     echo 'PS1="> "' >> /home/shell/.bashrc && \
     chown -R shell /home/shell
