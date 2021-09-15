@@ -1,10 +1,9 @@
-name: Build kubectl docker image to Portainer CI & Portainer
+name: Build kubectl docker image to Portainer CI
 
 on:
   push:
     branches:
       - develop
-      - master
     paths:
       - 'kube-shell/**'
   pull_request:
@@ -18,7 +17,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    environment:
+      name: staging
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -41,19 +41,9 @@ jobs:
           "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh" portainerci pr$GITHUB_PR_NUMBER
 
       - name: build the image to portainer ci ( Develop Latest )
-        if: ${{ github.ref == 'refs/heads/develop' }}
         run: |
           # make the script executeable 
           chmod +x "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh"
 
           # run the script
           "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh" portainerci latest
-
-      - name: build the image to portainer release ( Master Latest )
-        if: ${{ github.ref == 'refs/heads/master' }}
-        run: |
-          # make the script executeable 
-          chmod +x "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh"
-
-          # run the script
-          "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh" portainer latest
