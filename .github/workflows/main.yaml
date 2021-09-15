@@ -1,11 +1,20 @@
-# This is a basic workflow to build amd64/arm64 kubectl image for portainer
-
-name: build
+name: Build kubectl docker image to Portainer CI & Portainer
 
 on:
   push:
-    branches: develop
+    branches:
+      - develop
+      - master
+    paths:
+      - 'kube-shell/**'
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - 'kube-shell/**'
 
+env: 
+  GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,10 +30,30 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: login to docker hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      - name: build the image
+
+      - name: build the image to portainer ci with PR number
+        if: ${{ github.event.pull_request.number != '' }}
         run: |
-          #make the script executeable 
+          # make the script executeable 
           chmod +x "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh"
 
           # run the script
-          "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh"
+          "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh" portainerci pr$GITHUB_PR_NUMBER
+
+      - name: build the image to portainer ci ( Develop Latest )
+        if: ${{ github.ref == 'refs/heads/develop' }}
+        run: |
+          # make the script executeable 
+          chmod +x "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh"
+
+          # run the script
+          "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh" portainerci latest
+
+      - name: build the image to portainer release ( Master Latest )
+        if: ${{ github.ref == 'refs/heads/master' }}
+        run: |
+          # make the script executeable 
+          chmod +x "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh"
+
+          # run the script
+          "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh" portainer latest
