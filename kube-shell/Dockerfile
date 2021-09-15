@@ -1,6 +1,6 @@
-FROM alpine:3.13
-
-ARG ARCH=amd64
+ARG ALPINE=alpine:latest
+FROM ${ALPINE} as alpine
+ARG ARCH
 
 RUN apk add -U --no-cache bash bash-completion curl jq
 
