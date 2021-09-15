@@ -41,6 +41,7 @@ jobs:
           "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh" portainerci pr$GITHUB_PR_NUMBER
 
       - name: build the image to portainer ci ( Develop Latest )
+        if: ${{ github.ref == 'refs/heads/develop' }}
         run: |
           # make the script executeable 
           chmod +x "${GITHUB_WORKSPACE}/kube-shell/build-and-push.sh"
