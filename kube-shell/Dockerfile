@@ -5,14 +5,14 @@ ARG ARCH
 RUN apk add -U --no-cache bash bash-completion curl jq
 
 # Kubectl CLI
-ARG KUBECTL_VERSION=v1.21.1
+ARG KUBECTL_VERSION=v1.24.1
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl && \
     chmod +x ./kubectl && \
     mv ./kubectl /usr/local/bin/kubectl && \
     echo -e 'source /usr/share/bash-completion/bash_completion\nsource <(kubectl completion bash)' >>~/.bashrc
 
 # Helm
-ARG HELM_VERSION=v3.6.0
+ARG HELM_VERSION=v3.9.0
 RUN curl -L https://get.helm.sh/helm-${HELM_VERSION}-linux-${ARCH}.tar.gz | tar xvzf - && \
     mv ./linux-${ARCH}/helm . && \
     chmod +x ./helm && \
@@ -39,11 +39,11 @@ RUN echo 'shell:x:1000:1000:shell,,,:/home/shell:/bin/bash' > /etc/passwd && \
 
 # CMD file
 RUN echo $'#!/bin/bash\n\
-echo \n\
-echo "# Run kubectl commands inside here" \n\
-echo "# e.g. kubectl get all" \n\
-export TERM=screen-256color \n\
-exec bash' >> /usr/local/bin/welcome && \
+    echo \n\
+    echo "# Run kubectl commands inside here" \n\
+    echo "# e.g. kubectl get all" \n\
+    export TERM=screen-256color \n\
+    exec bash' >> /usr/local/bin/welcome && \
     chmod +x /usr/local/bin/welcome
 
 USER 1000
