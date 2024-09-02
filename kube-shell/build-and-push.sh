@@ -2,7 +2,7 @@
 set -e
 
 : ${REPO:=$1/kubectl-shell}
-: ${KUBERNETES_RELEASE:=v1.31.4}
+: ${KUBERNETES_RELEASE:=v1.31.0}
 : ${TAG:=$2}
 
 docker_image_build_and_push()
