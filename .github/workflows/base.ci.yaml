@@ -35,12 +35,8 @@ jobs:
         uses: docker/build-push-action@v6.7.0
         with:
           context: base/
+          tags: portainer/base:latest
           platforms: linux/amd64,linux/arm64,linux/arm,linux/ppc64le
           sbom: true
           provenance: true
-          tags: portainer/base:latest
           push: true
-
-      # - name: "[execution] build the base docker image"
-      #   run: |
-      #     docker buildx build --output=type=registry --platform linux/amd64,linux/arm64,linux/arm,linux/ppc64le -t portainer/base:latest -f base/Dockerfile .
