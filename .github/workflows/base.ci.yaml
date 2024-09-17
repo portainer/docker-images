@@ -35,10 +35,11 @@ jobs:
         uses: docker/build-push-action@v6.7.0
         with:
           context: base/
-          push: true
           platforms: linux/amd64,linux/arm64,linux/arm,linux/ppc64le
           sbom: true
           provenance: true
+          tags: portainer/base:latest
+          push: true
 
       # - name: "[execution] build the base docker image"
       #   run: |
