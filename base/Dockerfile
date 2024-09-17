@@ -1,4 +1,4 @@
-FROM alpine:latest as base
+FROM alpine:latest AS base
 RUN apk --no-cache --update upgrade && apk --no-cache add ca-certificates
 RUN mkdir /buildtmp
 
