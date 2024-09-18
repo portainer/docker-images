@@ -1,6 +1,7 @@
 name: "kubectl-shell"
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
@@ -17,7 +18,7 @@ env:
   GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
 
 jobs:
-  build:
+  build_images:
     runs-on: ubuntu-latest
     steps:
       - name: "[preparation] checkout"

@@ -1,9 +1,9 @@
 name: "base"
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0 * * *" # 00:00 UTC Everyday
-  workflow_dispatch:
 
 env:
   DOCKER_HUB_REPO: portainer/base
