@@ -1,0 +1,72 @@
+name: "kubectl-shell"
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'kube-shell/**'
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - 'kube-shell/**'
+
+env:
+  DOCKER_HUB_REPO: portainerci/kubectl-shell
+  GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "[preparation] checkout"
+        uses: actions/checkout@v4.1.1
+
+      - name: "[preparation] set up qemu"
+        uses: docker/setup-qemu-action@v3.2.0
+
+      - name: "[preparation] set up docker context for buildx"
+        run: docker context create builders
+
+      - name: "[preparation] set up docker buildx"
+        uses: docker/setup-buildx-action@v3.6.1
+        with:
+          endpoint: builders
+          driver-opts: image=moby/buildkit:v0.16.0
+          platforms: linux/amd64,linux/arm64,linux/arm,linux/ppc64le
+
+      - name: "[preparation] docker login"
+        uses: docker/login-action@v3.3.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Set Image Tag
+        run: |
+          echo "IMAGE_TAG=pr${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+        if: ${{ github.event.pull_request.number != '' }}
+
+      - name: Set Image Tag for Develop
+        run: |
+          echo "IMAGE_TAG=latest" >> $GITHUB_ENV
+        if: ${{ github.ref == 'refs/heads/develop' }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6.7.0
+        with:
+          context: kubectl-shell/ 
+          tags: ${{ env.DOCKER_HUB_REPO }}:${{ env.IMAGE_TAG }}
+          build-args: |
+            KUBERNETES_RELEASE=v1.31.0
+            ALPINE=alpine:latest
+            HELM_VERSION=v3.15.4
+          platforms: |
+            linux/amd64
+            linux/arm64
+            linux/arm
+            linux/ppc64le
+          attests: |
+            type=sbom,generator=docker/scout-sbom-indexer:latest
+            type=provenance,mode=max
+          push: true

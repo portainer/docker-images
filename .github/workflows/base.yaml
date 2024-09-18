@@ -1,12 +1,16 @@
-name: "base-ci"
+name: "base"
 
 on:
   schedule:
     - cron: "0 0 * * *" # 00:00 UTC Everyday
   workflow_dispatch:
 
+env:
+  DOCKER_HUB_REPO: portainer/base
+  IMAGE_TAG: latest
+
 jobs:
-  base-ci:
+  build_images:
     runs-on: ubuntu-latest
     steps:
       - name: "[preparation] checkout"
@@ -34,9 +38,14 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6.7.0
         with:
-          context: base/
-          tags: portainer/base:latest
-          platforms: linux/amd64,linux/arm64,linux/arm,linux/ppc64le
-          sbom: true
-          provenance: true
+          context: base/ 
+          tags: ${{ env.DOCKER_HUB_REPO }}:${{ env.IMAGE_TAG }}
+          platforms: |
+            linux/amd64
+            linux/arm64
+            linux/arm
+            linux/ppc64le
+          attests: |
+            type=sbom,generator=docker/scout-sbom-indexer:latest
+            type=provenance,mode=max
           push: true
