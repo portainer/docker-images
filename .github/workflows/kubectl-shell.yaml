@@ -46,12 +46,12 @@ jobs:
       - name: "set image tag for pull request"
         run: |
           echo "IMAGE_TAG=pr${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-        if: ${{ github.event.pull_request.number != '' }}
+        if: ${{ github.event_name == 'pull_request' }}
 
       - name: "set image tag for develop"
         run: |
           echo "IMAGE_TAG=latest" >> $GITHUB_ENV
-        if: ${{ github.ref == 'refs/heads/develop' }}
+        if: ${{ github.event_name == 'push' }}
 
       - name: "build and push images"
         uses: docker/build-push-action@v6.7.0
@@ -78,7 +78,7 @@ jobs:
         uses: docker/scout-action@v1
         with:
           command: cves
-          image: ${{ env.DOCKER_HUB_REPO }}:${{ env.CONTAINER_IMAGE_TAG }}
+          image: ${{ env.DOCKER_HUB_REPO }}:${{ env.IMAGE_TAG }}
           to: portainer/base:latest
           ignore-unchanged: true
           only-severities: critical,high
