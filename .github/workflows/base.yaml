@@ -1,4 +1,4 @@
-name: "base-ci"
+name: "base"
 
 on:
   schedule:
@@ -34,9 +34,14 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6.7.0
         with:
-          context: base/
+          context: base/ 
           tags: portainer/base:latest
-          platforms: linux/amd64,linux/arm64,linux/arm,linux/ppc64le
-          sbom: true
-          provenance: true
+          platforms: |
+            linux/amd64
+            linux/arm64
+            linux/arm
+            linux/ppc64le
+          attests: |
+            type=sbom,generator=docker/scout-sbom-indexer:latest
+            type=provenance,mode=max
           push: true
