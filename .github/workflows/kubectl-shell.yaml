@@ -6,12 +6,12 @@ on:
     branches:
       - develop
     paths:
-      - 'kube-shell/**'
+      - 'kubectl-shell/**'
   pull_request:
     branches:
       - develop
     paths:
-      - 'kube-shell/**'
+      - 'kubectl-shell/**'
 
 env:
   DOCKER_HUB_REPO: portainerci/kubectl-shell
