@@ -62,7 +62,7 @@ jobs:
           else
             # replace / with - in the branch name
             # for instance, feature/1.0.0 -> feature-1.0.0
-            echo "CONTAINER_IMAGE_TAG=$(echo $GITHUB_REF_NAME | sed 's/\//-/g')" >> $GITHUB_ENV"
+            echo "CONTAINER_IMAGE_TAG=$(echo $GITHUB_REF_NAME | sed 's/\//-/g')" >> $GITHUB_ENV
           fi
 
       - name: "build and push images"
