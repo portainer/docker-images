@@ -67,9 +67,8 @@ jobs:
             linux/arm64
             linux/arm
             linux/ppc64le
-          attests: |
-            type=sbom,generator=docker/scout-sbom-indexer:latest
-            type=provenance,mode=max
+          sbom: true
+          provenance: true
           push: true
 
       - name: "docker scout scan"
