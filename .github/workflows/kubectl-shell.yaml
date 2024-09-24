@@ -45,7 +45,7 @@ jobs:
 
       - name: "[metadata] generate image tags"
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5.5.1
         with:
           images: ${{ env.DOCKER_HUB_REPO }}
           tags: |
