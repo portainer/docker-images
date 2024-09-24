@@ -49,8 +49,8 @@ jobs:
         with:
           images: ${{ env.DOCKER_HUB_REPO }}
           tags: |
-            type=ref,event=branch,pattern=develop,format=develop
-            type=ref,event=pull_request,format=pr${GITHUB_PR_NUMBER}
+            type=ref,event=branch
+            type=ref,event=pr
 
       - name: "build and push images"
         uses: docker/build-push-action@v6.7.0
