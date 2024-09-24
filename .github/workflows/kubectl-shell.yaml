@@ -49,14 +49,15 @@ jobs:
         with:
           images: ${{ env.DOCKER_HUB_REPO }}
           tags: |
-            type=ref,event=branch,pattern=develop,format=develop
-            type=ref,event=pull_request,format=pr{{ event.number }}
+            type=ref,event=push,pattern=develop,format=latest,group=push
+            type=ref,event=pull_request,format=pr{{ event.number }},group=pull_request
+            type=ref,event=workflow_dispatch,format=manual-${{ github.run_number }},group=workflow_dispatch
 
       - name: "build and push images"
         uses: docker/build-push-action@v6.7.0
         with:
           context: kubectl-shell/ 
-          tags: ${{ env.DOCKER_HUB_REPO }}:${{ env.IMAGE_TAG }}
+          tags: ${{ steps.meta.outputs.tags }}
           build-args: |
             HELM_VERSION=v3.15.4
             KUBERNETES_RELEASE=v1.31.0
