@@ -51,7 +51,7 @@ jobs:
           tags: |
             type=ref,event=push,pattern=develop,format=latest,group=push
             type=ref,event=pull_request,format=pr{{ event.number }},group=pull_request
-            type=ref,event=workflow_dispatch,format=manual-${{ github.run_number }},group=workflow_dispatch
+            type=raw,event=workflow_dispatch,format=manual-${{ github.run_number }},group=workflow_dispatch
 
       - name: "build and push images"
         uses: docker/build-push-action@v6.7.0
