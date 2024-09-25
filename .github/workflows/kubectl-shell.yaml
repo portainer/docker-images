@@ -4,12 +4,19 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - develop
+      - 'develop'
+      - 'release/*'
     paths:
       - 'kubectl-shell/**'
   pull_request:
+    types:
+      - 'opened'
+      - 'reopened'
+      - 'synchronize'
+      - 'ready_for_review'
     branches:
-      - develop
+      - 'develop'
+      - 'release/*'      
     paths:
       - 'kubectl-shell/**'
 
