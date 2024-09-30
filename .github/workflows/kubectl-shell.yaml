@@ -74,7 +74,7 @@ jobs:
             KUBERNETES_RELEASE=v1.31.0
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
-          outputs: type=registry,name=${{ env.DOCKER_HUB_REPO }},push-by-digest=true,name-canonical=true,push=true
+          outputs: type=image,name=${{ env.DOCKER_HUB_REPO }},push-by-digest=true,name-canonical=true,push=true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           sbom: false
@@ -153,6 +153,8 @@ jobs:
         run: |
           docker manifest create ${{ env.DOCKER_HUB_REPO }}:${{ steps.meta.outputs.version }} \
             $(printf '${{ env.DOCKER_HUB_REPO }}@sha256:%s ' *)
+
+          docker manifest push ${{ env.DOCKER_HUB_REPO }}:${{ steps.meta.outputs.version }}
 
       - name: "[validate] inspect image"
         run: |
