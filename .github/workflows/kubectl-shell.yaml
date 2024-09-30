@@ -73,12 +73,12 @@ jobs:
             HELM_VERSION=v3.15.4
             KUBERNETES_RELEASE=v1.31.0
           labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
           outputs: type=registry,name=${{ env.DOCKER_HUB_REPO }},push-by-digest=true,name-canonical=true,push=true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          attests: |
-            type=sbom
-            type=provenance,mode=max
+          sbom: false
+          provenance: false
 
       - name: "[build] export digest"
         run: |
@@ -151,9 +151,9 @@ jobs:
       - name: "[build] create manifest list and push"
         working-directory: /tmp/digests
         run: |
-          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ env.DOCKER_HUB_REPO }}@sha256:%s ' *)          
-      
+          docker manifest create ${{ env.DOCKER_HUB_REPO }}:${{ steps.meta.outputs.version }} \
+            $(printf '${{ env.DOCKER_HUB_REPO }}@sha256:%s ' *)
+
       - name: "[validate] inspect image"
         run: |
           docker buildx imagetools inspect ${{ env.DOCKER_HUB_REPO }}:${{ steps.meta.outputs.version }}  
