@@ -79,6 +79,10 @@ jobs:
           cache-to: type=gha,mode=max
           sbom: false
           provenance: false
+        env:
+          DOCKER_BUILD_SUMMARY: false
+          DOCKER_BUILD_RECORD_UPLOAD: false
+          DOCKER_BUILD_CHECKS_ANNOTATIONS: false
 
       - name: "[build] export digest"
         run: |
