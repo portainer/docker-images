@@ -1,13 +1,13 @@
 ARG ALPINE=alpine:latest
 FROM ${ALPINE} AS alpine
 ARG TARGETARCH
-ARG KUBECTL_VERSION=v1.31.0
-ARG HELM_VERSION=v3.15.4
+ARG KUBECTL_VERSION=v1.31.4
+ARG HELM_VERSION=v3.16.4
 
 RUN apk add -U --no-cache bash bash-completion curl jq
 
 # Kubectl CLI
-RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl && \
+RUN curl -LO https://dl.k8s.io/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl && \
     chmod +x ./kubectl && \
     mv ./kubectl /usr/local/bin/kubectl && \
     echo -e 'source /usr/share/bash-completion/bash_completion\nsource <(kubectl completion bash)' >>~/.bashrc
