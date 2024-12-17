@@ -70,8 +70,8 @@ jobs:
           context: kubectl-shell/        
           platforms: ${{ matrix.config.platform }}/${{ matrix.config.arch }}
           build-args: |
-            HELM_VERSION=v3.15.4
-            KUBERNETES_RELEASE=v1.31.0
+            HELM_VERSION=v3.16.4
+            KUBERNETES_RELEASE=v1.31.4
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
           outputs: type=image,name=${{ env.DOCKER_HUB_REPO }},push-by-digest=true,name-canonical=true,push=true
