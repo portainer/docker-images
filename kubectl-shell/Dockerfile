@@ -1,8 +1,8 @@
 ARG ALPINE=alpine:latest
 FROM ${ALPINE} AS alpine
 ARG TARGETARCH
-ARG KUBECTL_VERSION=v1.31.4
-ARG HELM_VERSION=v3.16.4
+ARG KUBECTL_VERSION=v1.32.1
+ARG HELM_VERSION=v3.17.0
 
 RUN apk add -U --no-cache bash bash-completion curl jq
 
